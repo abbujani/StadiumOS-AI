@@ -20,7 +20,7 @@ interface InteractiveStadiumTwinProps {
   onIncidentSelect?: (incident: Incident) => void;
 }
 
-export const InteractiveStadiumTwin: React.FC<InteractiveStadiumTwinProps> = ({ onIncidentSelect }) => {
+const InteractiveStadiumTwinComponent: React.FC<InteractiveStadiumTwinProps> = ({ onIncidentSelect }) => {
   const { 
     gateStatuses, 
     incidents, 
@@ -533,4 +533,5 @@ export const InteractiveStadiumTwin: React.FC<InteractiveStadiumTwinProps> = ({ 
   );
 };
 
+export const InteractiveStadiumTwin = React.memo(InteractiveStadiumTwinComponent);
 export default InteractiveStadiumTwin;

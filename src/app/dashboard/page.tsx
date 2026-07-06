@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useApp, Incident } from "@/context/AppContext";
 import { 
   Users, 
@@ -17,7 +17,15 @@ import {
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
 import Badge from "@/components/ui/Badge";
-import InteractiveStadiumTwin from "@/components/ui/InteractiveStadiumTwin";
+import dynamic from "next/dynamic";
+
+const InteractiveStadiumTwin = dynamic(
+  () => import("@/components/ui/InteractiveStadiumTwin"),
+  {
+    ssr: false,
+    loading: () => <div className="h-[400px] bg-white/5 animate-pulse rounded-lg border border-white/5 flex items-center justify-center text-xs text-muted-foreground">Loading Interactive Stadium Twin...</div>
+  }
+);
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import Link from "next/link";
 import { 
@@ -100,7 +108,7 @@ export default function DashboardPage() {
     return () => clearTimeout(timer);
   }, [isMounted, gateStatuses, incidents, activeScenario, crowdLevel]);
 
-  const handleRunCommand = async (e: React.FormEvent) => {
+  const handleRunCommand = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!commandQuery.trim()) return;
 
@@ -127,9 +135,9 @@ export default function DashboardPage() {
     } finally {
       setLoadingCommand(false);
     }
-  };
+  }, [commandQuery, gateStatuses, incidents, activeScenario, crowdLevel]);
 
-  const handlePrintMatchBrief = () => {
+  const handlePrintMatchBrief = useCallback(() => {
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
 
@@ -199,7 +207,27 @@ export default function DashboardPage() {
     setTimeout(() => {
       printWindow.print();
     }, 500);
-  };
+  }, [stadiumHealth, crowdRisk, crowdLevel, aiConfidence, executiveSummary, incidents, transitFeeds]);
+
+  // Simulated chart curves
+  const ingressData = useMemo(() => [
+    { time: "18:00", standard: 5000, actual: 4800 },
+    { time: "19:00", standard: 12000, actual: 11500 },
+    { time: "20:00", standard: 25000, actual: 23000 },
+    { time: "21:00", standard: 45000, actual: 41000 },
+    { time: "22:00", standard: 65000, actual: 62840 },
+    { time: "23:00", standard: 70000, actual: 68401 },
+  ], []);
+
+  const queueData = useMemo(() => [
+    { name: "Gate A", wait: gateStatuses["Gate A (North)"] === "closed" ? 0 : gateStatuses["Gate A (North)"] === "congested" ? 28 : 12, capacity: 85 },
+    { name: "Gate B", wait: gateStatuses["Gate B (East)"] === "congested" ? 22 : 6, capacity: 90 },
+    { name: "Gate C", wait: 4, capacity: 55 },
+    { name: "Gate D", wait: 8, capacity: 70 },
+    { name: "ADA Gate 1", wait: 2, capacity: 40 },
+  ], [gateStatuses]);
+
+  const activeIncidents = useMemo(() => incidents.filter(i => i.status !== "resolved"), [incidents]);
 
   if (!isMounted) {
     return (
@@ -208,26 +236,6 @@ export default function DashboardPage() {
       </div>
     );
   }
-
-  // Simulated chart curves
-  const ingressData = [
-    { time: "18:00", standard: 5000, actual: 4800 },
-    { time: "19:00", standard: 12000, actual: 11500 },
-    { time: "20:00", standard: 25000, actual: 23000 },
-    { time: "21:00", standard: 45000, actual: 41000 },
-    { time: "22:00", standard: 65000, actual: 62840 },
-    { time: "23:00", standard: 70000, actual: 68401 },
-  ];
-
-  const queueData = [
-    { name: "Gate A", wait: gateStatuses["Gate A (North)"] === "closed" ? 0 : gateStatuses["Gate A (North)"] === "congested" ? 28 : 12, capacity: 85 },
-    { name: "Gate B", wait: gateStatuses["Gate B (East)"] === "congested" ? 22 : 6, capacity: 90 },
-    { name: "Gate C", wait: 4, capacity: 55 },
-    { name: "Gate D", wait: 8, capacity: 70 },
-    { name: "ADA Gate 1", wait: 2, capacity: 40 },
-  ];
-
-  const activeIncidents = incidents.filter(i => i.status !== "resolved");
 
   return (
     <div className="space-y-6">

@@ -57,22 +57,22 @@ export const Sidebar: React.FC = () => {
 
   // Navigation schema defining which roles have primary clearance for specific features
   const coreLinks = [
-    { href: "/dashboard", icon: <LayoutDashboard className="w-4 h-4" />, label: "Operations Room", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
-    { href: "/ai-assistant", icon: <MessageSquare className="w-4 h-4" />, label: "AI Fan Assistant", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
-    { href: "/navigation", icon: <MapPin className="w-4 h-4" />, label: "Smart Navigation", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
-    { href: "/transportation", icon: <Train className="w-4 h-4" />, label: "Transportation Hub", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
-    { href: "/accessibility", icon: <Accessibility className="w-4 h-4" />, label: "Accessibility Portal", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
+    { href: "/dashboard", icon: <LayoutDashboard className="w-4 h-4" />, label: "Operations Room [Ops]", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
+    { href: "/ai-assistant", icon: <MessageSquare className="w-4 h-4" />, label: "AI Fan Assistant [Liaison]", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
+    { href: "/navigation", icon: <MapPin className="w-4 h-4" />, label: "Smart Navigation [Navigation]", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
+    { href: "/transportation", icon: <Train className="w-4 h-4" />, label: "Transportation Hub [Transit & Eco]", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
+    { href: "/accessibility", icon: <Accessibility className="w-4 h-4" />, label: "Accessibility Portal [Accessibility]", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
   ];
 
   const opsLinks = [
-    { href: "/crowd-analytics", icon: <Users className="w-4 h-4" />, label: "Crowd Analytics", roles: ["organizer", "security", "admin"] },
-    { href: "/security", icon: <ShieldAlert className="w-4 h-4" />, label: "Security & Dispatch", roles: ["organizer", "security", "medical", "admin"] },
-    { href: "/volunteer", icon: <HeartHandshake className="w-4 h-4" />, label: "Volunteer Portal", roles: ["organizer", "volunteer", "admin"] },
-    { href: "/admin", icon: <Sliders className="w-4 h-4" />, label: "Admin Console", roles: ["admin", "organizer"] },
+    { href: "/crowd-analytics", icon: <Users className="w-4 h-4" />, label: "Crowd Analytics [Crowd]", roles: ["organizer", "security", "admin"] },
+    { href: "/security", icon: <ShieldAlert className="w-4 h-4" />, label: "Security & Dispatch [Decision Support]", roles: ["organizer", "security", "medical", "admin"] },
+    { href: "/volunteer", icon: <HeartHandshake className="w-4 h-4" />, label: "Volunteer Portal [Volunteers]", roles: ["organizer", "volunteer", "admin"] },
+    { href: "/admin", icon: <Sliders className="w-4 h-4" />, label: "Admin Console [Simulator]", roles: ["admin", "organizer"] },
   ];
 
   const sysLinks = [
-    { href: "/settings", icon: <Settings className="w-4 h-4" />, label: "Settings", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
+    { href: "/settings", icon: <Settings className="w-4 h-4" />, label: "Settings [Config]", roles: ["fan", "organizer", "volunteer", "security", "medical", "admin"] },
   ];
 
   // Helper check to verify if the active role matches the page scope

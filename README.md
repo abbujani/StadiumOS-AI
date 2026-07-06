@@ -5,6 +5,23 @@ StadiumOS AI is a production-ready, enterprise-grade Generative AI platform desi
 
 ---
 
+## 🎯 Challenge 4 Mapping Grid
+
+| Challenge Requirement | StadiumOS Feature | Official Statement Alignment |
+| :--- | :--- | :--- |
+| **Crowd Management** | [Crowd Analytics [Crowd]](file:///d:/OneDrive/Desktop/StadiumOS%20AI/src/app/crowd-analytics/page.tsx) | Predicts gate wait times and charts real-time occupancy load trends |
+| **Stadium Navigation** | [Smart Navigation [Navigation]](file:///d:/OneDrive/Desktop/StadiumOS%20AI/src/app/navigation/page.tsx) | Computes custom routes for wheelchair priority pathways and standard walking directions |
+| **Accessibility** | [Accessibility Portal [Accessibility]](file:///d:/OneDrive/Desktop/StadiumOS%20AI/src/app/accessibility/page.tsx) | WCAG AAA contrast controls, font scale toggles, and localized speech synthesis readers |
+| **Transportation** | [Transportation Hub [Transit & Eco]](file:///d:/OneDrive/Desktop/StadiumOS%20AI/src/app/transportation/page.tsx) | Live schedules and delay forecasting for shuttle buses and subway metro lines |
+| **Sustainability** | [Transportation Hub [Transit & Eco]](file:///d:/OneDrive/Desktop/StadiumOS%20AI/src/app/transportation/page.tsx) | Calculates carbon savings offsets comparing solo vehicle commutes to public transit |
+| **Volunteers** | [Volunteer Portal [Volunteers]](file:///d:/OneDrive/Desktop/StadiumOS%20AI/src/app/volunteer/page.tsx) | Reallocates volunteers to congested gates based on AI load predictions |
+| **Multilingual Assistance** | [AI Fan Assistant [Liaison]](file:///d:/OneDrive/Desktop/StadiumOS%20AI/src/app/ai-assistant/page.tsx) | Multilingual LLM liaison chat handling stadium directions, foods, and restroom queries |
+| **Real-Time Decision Support** | [Security & Dispatch [Decision Support]](file:///d:/OneDrive/Desktop/StadiumOS%20AI/src/app/security/page.tsx) | Dispatches security and medical teams to active incident report zones |
+| **Tournament Operations** | [Operations Room [Ops]](file:///d:/OneDrive/Desktop/StadiumOS%20AI/src/app/dashboard/page.tsx) | Telemetry room tracking overall stadium health scores, crowd risks, and carbon indices |
+| **Crisis Simulation** | [Admin Console [Simulator]](file:///d:/OneDrive/Desktop/StadiumOS%20AI/src/app/admin/page.tsx) | Simulates operational emergencies (heavy rain, gate closures) to generate AI response guides |
+
+---
+
 ## 🚀 Key Features
 
 * **AI Mission Control Room:** Live operations telemetry dashboard showing Stadium Health Score, Live Attendance, Crowd Risk, and AI Model Confidence with animated count-ups. Includes a natural language command terminal and printable PDF brief exporter.

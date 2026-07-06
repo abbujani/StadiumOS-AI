@@ -10,7 +10,15 @@ import {
   Clock
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
-import InteractiveStadiumTwin from "@/components/ui/InteractiveStadiumTwin";
+import dynamic from "next/dynamic";
+
+const InteractiveStadiumTwin = dynamic(
+  () => import("@/components/ui/InteractiveStadiumTwin"),
+  {
+    ssr: false,
+    loading: () => <div className="h-[400px] bg-white/5 animate-pulse rounded-lg border border-white/5 flex items-center justify-center text-xs text-muted-foreground">Loading Interactive Stadium Twin...</div>
+  }
+);
 
 export default function NavigationPage() {
   const { 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useApp } from "@/context/AppContext";
 import { 
   Train, 
@@ -35,16 +35,8 @@ export default function TransportationPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (!isMounted) {
-    return (
-      <div className="flex h-[80vh] items-center justify-center">
-        <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
-
   // Simulated traffic perimeter speeds (mph) over time
-  const trafficSpeedData = [
+  const trafficSpeedData = useMemo(() => [
     { time: "18:00", freewaySpeed: 55, stadiumRoadsSpeed: 38 },
     { time: "18:30", freewaySpeed: 48, stadiumRoadsSpeed: 28 },
     { time: "19:00", freewaySpeed: 42, stadiumRoadsSpeed: 18 },
@@ -52,29 +44,37 @@ export default function TransportationPage() {
     { time: "20:00", freewaySpeed: 25, stadiumRoadsSpeed: 8 },
     { time: "20:30", freewaySpeed: 45, stadiumRoadsSpeed: 32 },
     { time: "21:00", freewaySpeed: 58, stadiumRoadsSpeed: 40 },
-  ];
+  ], []);
 
   // Carbon Emission calculations (grams of CO2 per passenger km)
-  const carbonFactors: Record<string, number> = {
+  const carbonFactors = useMemo<Record<string, number>>(() => ({
     car_solo: 220,
     rideshare: 110,
     bus: 80,
     metro: 20
-  };
+  }), []);
 
-  const soloCarCarbon = distanceKm * carbonFactors["car_solo"];
-  const selectedCarbon = distanceKm * carbonFactors[selectedTransit];
-  const carbonSaved = soloCarCarbon - selectedCarbon;
+  const soloCarCarbon = useMemo(() => distanceKm * carbonFactors["car_solo"], [distanceKm, carbonFactors]);
+  const selectedCarbon = useMemo(() => distanceKm * carbonFactors[selectedTransit], [distanceKm, selectedTransit, carbonFactors]);
+  const carbonSaved = useMemo(() => soloCarCarbon - selectedCarbon, [soloCarCarbon, selectedCarbon]);
 
   // Transit forecast data (+10, +20, +30 mins)
-  const transitForecasts = [
+  const transitForecasts = useMemo(() => [
     { time: "+10 mins", mode: "Metro Line 26", status: "on-time", wait: "4 min wait", load: "heavy" },
     { time: "+10 mins", mode: "Stadium Shuttle", status: "on-time", wait: "6 min wait", load: "medium" },
     { time: "+20 mins", mode: "Metro Line 26", status: "busy", wait: "6 min wait", load: "heavy" },
     { time: "+20 mins", mode: "Stadium Shuttle", status: "delayed", wait: "12 min wait", load: "heavy" },
     { time: "+30 mins", mode: "Metro Line 26", status: "delayed", wait: "10 min wait", load: "critical" }, // post-match peak
     { time: "+30 mins", mode: "Stadium Shuttle", status: "slow", wait: "15 min wait", load: "heavy" }
-  ];
+  ], []);
+
+  if (!isMounted) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
