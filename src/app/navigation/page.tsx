@@ -4,18 +4,12 @@ import React, { useState } from "react";
 import { useApp, StadiumScenario } from "@/context/AppContext";
 import { 
   Compass, 
-  MapPin, 
   Accessibility, 
-  AlertTriangle, 
   Navigation,
-  ArrowRight,
   Route,
-  Clock,
-  Sparkles,
-  Info
+  Clock
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
-import Badge from "@/components/ui/Badge";
 import InteractiveStadiumTwin from "@/components/ui/InteractiveStadiumTwin";
 
 export default function NavigationPage() {
@@ -23,8 +17,7 @@ export default function NavigationPage() {
     activeScenario, 
     triggerSimulationScenario,
     wheelchairRoutes,
-    setWheelchairRoutes,
-    gateStatuses
+    setWheelchairRoutes
   } = useApp();
 
   const [fromPoint, setFromPoint] = useState("Transit Hub (Metro)");
@@ -62,7 +55,6 @@ export default function NavigationPage() {
       setCalculating(false);
       
       const isWheelchair = wheelchairRoutes;
-      const isGateAClosed = gateStatuses["Gate A (North)"] === "closed";
       
       let steps = [];
       let time = 8;

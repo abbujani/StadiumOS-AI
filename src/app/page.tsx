@@ -5,18 +5,12 @@ import Link from "next/link";
 import { 
   Sparkles, 
   ArrowRight, 
-  Activity, 
   ShieldCheck, 
-  MapPin, 
   Users, 
-  Globe, 
   ChevronRight,
-  Accessibility,
-  Flame,
   Leaf
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
-import Badge from "@/components/ui/Badge";
 
 export default function LandingPage() {
   const [attendeeCount, setAttendeeCount] = useState(62840);

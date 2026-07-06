@@ -110,7 +110,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Live Telemetry
   const [stadiumHealth, setStadiumHealth] = useState(98);
   const [crowdRisk, setCrowdRisk] = useState(12);
-  const [aiConfidence, setAiConfidence] = useState(99);
+  const [aiConfidence] = useState(99);
 
   // Simulation State
   const [activeScenario, setActiveScenario] = useState<StadiumScenario>("none");

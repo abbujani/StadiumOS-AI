@@ -10,11 +10,9 @@ import {
   MapPin,
   Users,
   ShieldAlert,
-  Compass,
   Accessibility,
   HeartHandshake,
   Settings,
-  Tv,
   LogOut,
   Train,
   Sliders

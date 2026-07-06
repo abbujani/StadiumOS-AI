@@ -4,18 +4,13 @@ import React, { useState } from "react";
 import { useApp, GateStatus, StadiumScenario } from "@/context/AppContext";
 import { 
   Sliders, 
-  Sparkles, 
-  MapPin, 
   PlusCircle, 
   Activity, 
-  ShieldAlert, 
   Database,
-  Volume2,
   RefreshCw,
   Cpu
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
-import Badge from "@/components/ui/Badge";
 import confetti from "canvas-confetti";
 
 export default function AdminPage() {
@@ -26,8 +21,7 @@ export default function AdminPage() {
     setGateStatus,
     activeScenario,
     triggerSimulationScenario,
-    addIncident,
-    incidents
+    addIncident
   } = useApp();
 
   const [incTitle, setIncTitle] = useState("");
@@ -215,7 +209,7 @@ export default function AdminPage() {
                   <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Incident Type</label>
                   <select
                     value={incType}
-                    onChange={(e) => setIncType(e.target.value as any)}
+                    onChange={(e) => setIncType(e.target.value as "security" | "medical" | "facility" | "crowd")}
                     className="w-full bg-zinc-950 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white outline-none focus:border-purple-500 cursor-pointer"
                   >
                     <option value="security">Security</option>
@@ -229,7 +223,7 @@ export default function AdminPage() {
                   <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Severity</label>
                   <select
                     value={incSeverity}
-                    onChange={(e) => setIncSeverity(e.target.value as any)}
+                    onChange={(e) => setIncSeverity(e.target.value as "low" | "medium" | "high" | "critical")}
                     className="w-full bg-zinc-950 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white outline-none focus:border-purple-500 cursor-pointer"
                   >
                     <option value="low">Low</option>

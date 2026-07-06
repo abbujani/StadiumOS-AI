@@ -1,6 +1,16 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+interface Incident {
+  id: string;
+  title: string;
+  type: "security" | "medical" | "facility" | "crowd";
+  location: string;
+  severity: "low" | "medium" | "high" | "critical";
+  description: string;
+  status: "reported" | "dispatched" | "resolved";
+}
+
 const apiKey = process.env.GEMINI_API_KEY;
 let genAI: GoogleGenerativeAI | null = null;
 
@@ -9,12 +19,12 @@ if (apiKey) {
 }
 
 // Local analytics fallback for Command queries
-const runLocalCommand = (query: string, gateStatuses: any, incidents: any[]): string => {
+const runLocalCommand = (query: string, gateStatuses: Record<string, string>, incidents: Incident[]): string => {
   const q = query.toLowerCase();
   
   if (q.includes("crowd") || q.includes("gate") || q.includes("congested")) {
     const congestedGates = Object.entries(gateStatuses)
-      .filter(([_, status]) => status === "congested" || status === "closed")
+      .filter(([, status]) => status === "congested" || status === "closed")
       .map(([name, status]) => `**${name}** (${status})`);
       
     if (congestedGates.length === 0) {
@@ -57,7 +67,7 @@ Analyzed query: "${query}" against live telemetry feeds.
 };
 
 // Local executive summary generator
-const generateExecutiveSummary = (gateStatuses: any, incidents: any[], activeScenario: string, crowdLevel: number): string => {
+const generateExecutiveSummary = (gateStatuses: Record<string, string>, incidents: Incident[], activeScenario: string, crowdLevel: number): string => {
   const activeInc = incidents.filter(i => i.status !== "resolved");
   const medicalCount = activeInc.filter(i => i.type === "medical").length;
   const securityCount = activeInc.filter(i => i.type === "security").length;

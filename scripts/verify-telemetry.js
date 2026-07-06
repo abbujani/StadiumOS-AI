@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /**
  * StadiumOS AI - Telemetry Unit & Integration Tests (Enhanced)
  * Run with: node scripts/verify-telemetry.js

@@ -5,16 +5,9 @@ import { useApp } from "@/context/AppContext";
 import { 
   Train, 
   Bus, 
-  Car, 
-  Leaf, 
   Clock, 
-  MapPin, 
-  TrendingDown, 
-  Sparkles,
-  ArrowRight,
   Calculator,
-  Compass,
-  AlertTriangle
+  Compass
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
 import Badge from "@/components/ui/Badge";
@@ -36,7 +29,10 @@ export default function TransportationPage() {
   const [selectedTransit, setSelectedTransit] = useState("metro");
 
   useEffect(() => {
-    setIsMounted(true);
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!isMounted) {

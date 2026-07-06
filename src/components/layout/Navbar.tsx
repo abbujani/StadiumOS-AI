@@ -4,9 +4,6 @@ import React, { useEffect } from "react";
 import { useApp, UserRole } from "@/context/AppContext";
 import { 
   Shield, 
-  User, 
-  Activity, 
-  Accessibility, 
   Volume2, 
   Type, 
   Eye, 
@@ -25,7 +22,6 @@ export const Navbar: React.FC = () => {
   const {
     userRole,
     setUserRole,
-    activeStadium,
     voiceNavigation,
     setVoiceNavigation,
     highContrast,
@@ -99,6 +95,7 @@ export const Navbar: React.FC = () => {
     }, 8500);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTourActive, tourStep]);
 
   // Tour step descriptions

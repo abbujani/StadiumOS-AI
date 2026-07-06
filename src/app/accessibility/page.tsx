@@ -8,14 +8,11 @@ import {
   Volume2, 
   Type, 
   Compass, 
-  CheckCircle,
-  HelpCircle,
   Play,
   Languages,
   Activity
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
-import Badge from "@/components/ui/Badge";
 
 export default function AccessibilityPage() {
   const {
@@ -40,7 +37,7 @@ export default function AccessibilityPage() {
     let speechText = "";
     if (category === "gates") {
       const activeCongested = Object.entries(gateStatuses)
-        .filter(([_, status]) => status !== "open")
+        .filter(([, status]) => status !== "open")
         .map(([name, status]) => `${name} is currently ${status}`);
         
       speechText = `Gates intake report. ${

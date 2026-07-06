@@ -7,13 +7,10 @@ import {
   Key, 
   User, 
   Bell, 
-  Database, 
   Sparkles,
-  CheckCircle,
   Save
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
-import Badge from "@/components/ui/Badge";
 import confetti from "canvas-confetti";
 
 export default function SettingsPage() {
@@ -35,11 +32,14 @@ export default function SettingsPage() {
 
   // Load keys from localStorage on mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setGeminiKey(localStorage.getItem("GEMINI_API_KEY") || "");
-      setFirebaseKey(localStorage.getItem("FIREBASE_API_KEY") || "");
-      setProjectId(localStorage.getItem("FIREBASE_PROJECT_ID") || "stadiumos-worldcup-2026");
-    }
+    const timer = setTimeout(() => {
+      if (typeof window !== "undefined") {
+        setGeminiKey(localStorage.getItem("GEMINI_API_KEY") || "");
+        setFirebaseKey(localStorage.getItem("FIREBASE_API_KEY") || "");
+        setProjectId(localStorage.getItem("FIREBASE_PROJECT_ID") || "stadiumos-worldcup-2026");
+      }
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleSaveSettings = (e: React.FormEvent) => {

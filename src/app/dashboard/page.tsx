@@ -4,13 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useApp, Incident } from "@/context/AppContext";
 import { 
   Users, 
-  ShieldAlert, 
-  Clock, 
-  Leaf,
   Activity,
   ArrowRight,
-  MapPin,
-  HeartHandshake,
   AlertTriangle,
   BrainCircuit,
   Settings,
@@ -34,8 +29,7 @@ import {
   XAxis, 
   YAxis, 
   CartesianGrid, 
-  Tooltip, 
-  Legend 
+  Tooltip
 } from "recharts";
 
 export default function DashboardPage() {
@@ -68,14 +62,20 @@ export default function DashboardPage() {
 
   // Recharts & UI hydration guard
   useEffect(() => {
-    setIsMounted(true);
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Fetch executive summary
   useEffect(() => {
     if (!isMounted) return;
     
-    setLoadingSummary(true);
+    const timer = setTimeout(() => {
+      setLoadingSummary(true);
+    }, 0);
+
     fetch("/api/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -96,6 +96,8 @@ export default function DashboardPage() {
         console.error("Error fetching summary:", err);
         setLoadingSummary(false);
       });
+
+    return () => clearTimeout(timer);
   }, [isMounted, gateStatuses, incidents, activeScenario, crowdLevel]);
 
   const handleRunCommand = async (e: React.FormEvent) => {
@@ -120,7 +122,7 @@ export default function DashboardPage() {
       });
       const data = await res.json();
       setCommandResult(data.result || "No results found.");
-    } catch (err) {
+    } catch {
       setCommandResult("Error connecting to AI Command core. Please check API credentials.");
     } finally {
       setLoadingCommand(false);

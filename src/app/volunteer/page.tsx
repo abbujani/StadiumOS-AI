@@ -1,16 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { useApp, Volunteer } from "@/context/AppContext";
+import { useApp } from "@/context/AppContext";
 import { 
   HeartHandshake, 
   Sparkles, 
-  MapPin, 
   Clock, 
   MessageCircle, 
-  CheckCircle, 
-  AlertTriangle,
-  ArrowRight,
   UserCheck,
   Zap,
   TrendingUp,
@@ -20,7 +16,7 @@ import GlassCard from "@/components/ui/GlassCard";
 import Badge from "@/components/ui/Badge";
 
 export default function VolunteerPortalPage() {
-  const { volunteers, incidents, updateVolunteerStatus, gateStatuses } = useApp();
+  const { updateVolunteerStatus, gateStatuses } = useApp();
   const [checkedIn, setCheckedIn] = useState(true);
   const [chatInput, setChatInput] = useState("");
   const [chatLogs, setChatLogs] = useState([

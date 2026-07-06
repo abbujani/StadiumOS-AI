@@ -9,11 +9,9 @@ import {
   Sparkles, 
   ArrowRight,
   ShieldCheck,
-  UserCheck,
   Loader2
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
-import Badge from "@/components/ui/Badge";
 import confetti from "canvas-confetti";
 
 export default function LoginPage() {

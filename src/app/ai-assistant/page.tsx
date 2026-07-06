@@ -9,11 +9,9 @@ import {
   Sparkles, 
   MapPin, 
   Utensils, 
-  Tv, 
   AlertTriangle,
   User,
   Info,
-  Clock,
   Compass
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
@@ -25,6 +23,13 @@ interface Message {
   content: string;
   timestamp: string;
 }
+
+// Pure helper declared outside the React component to satisfy the compiler
+let msgCounter = 0;
+const generateMessageId = () => {
+  msgCounter++;
+  return `msg-ai-${Date.now()}-${msgCounter}`;
+};
 
 export default function AIAssistantPage() {
   const { voiceNavigation } = useApp();
@@ -53,7 +58,7 @@ export default function AIAssistantPage() {
     if (!text.trim()) return;
 
     const userMsg: Message = {
-      id: `msg-${Date.now()}`,
+      id: generateMessageId(),
       role: "user",
       content: text,
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
@@ -75,7 +80,7 @@ export default function AIAssistantPage() {
       const data = await response.json();
       
       const assistantMsg: Message = {
-        id: `msg-${Date.now() + 1}`,
+        id: generateMessageId(),
         role: "assistant",
         content: data.content || "I apologize, but I encountered a processing error. Please try again.",
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
@@ -85,7 +90,7 @@ export default function AIAssistantPage() {
     } catch (err) {
       console.error("Chat error:", err);
       const errorMsg: Message = {
-        id: `msg-${Date.now() + 2}`,
+        id: generateMessageId(),
         role: "assistant",
         content: "Network connectivity issue detected. Running fallback operations: Restrooms are located behind Sections 105, 112, 124. Nearest Gate is Gate B.",
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
@@ -103,7 +108,6 @@ export default function AIAssistantPage() {
       handleSend("Where is Section 104 and how do I find my seat?");
     } else {
       setIsListening(true);
-      setError("");
     }
   };
 
@@ -113,8 +117,6 @@ export default function AIAssistantPage() {
     { label: "Restroom Status", text: "Where is the closest washroom to Section 104?", icon: <Info className="w-3.5 h-3.5" /> },
     { label: "Trigger Medical Alarm", text: "Help, emergency! Someone collapsed in Section 104.", icon: <AlertTriangle className="w-3.5 h-3.5" /> },
   ];
-
-  const [error, setError] = useState("");
 
   return (
     <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 h-[calc(100vh-100px)]">

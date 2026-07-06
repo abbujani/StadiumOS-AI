@@ -7,11 +7,10 @@ import {
   TrendingUp, 
   Clock, 
   MapPin, 
-  HelpCircle,
-  Sparkles,
-  ArrowRight,
-  TrendingDown,
-  Activity,
+  Sparkles, 
+  ArrowRight, 
+  TrendingDown, 
+  Activity, 
   Layers
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
@@ -26,8 +25,7 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  Legend,
-  Cell
+  Legend
 } from "recharts";
 
 export default function CrowdAnalyticsPage() {
@@ -35,7 +33,10 @@ export default function CrowdAnalyticsPage() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!isMounted) {

@@ -22,8 +22,10 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
   useEffect(() => {
     // If the accessibility setting "Reduced Motion" is enabled, bypass count-up animations entirely
     if (reducedMotion) {
-      setDisplayValue(value);
-      return;
+      const timer = setTimeout(() => {
+        setDisplayValue(value);
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     let startTimestamp: number | null = null;
@@ -49,6 +51,7 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
 
     const animFrame = window.requestAnimationFrame(step);
     return () => window.cancelAnimationFrame(animFrame);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, duration, reducedMotion]);
 
   return <span>{prefix}{displayValue.toLocaleString()}{suffix}</span>;

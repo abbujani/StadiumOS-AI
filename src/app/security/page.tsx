@@ -1,20 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useApp, Incident, Volunteer } from "@/context/AppContext";
+import { useApp, Incident } from "@/context/AppContext";
 import { 
   ShieldAlert, 
-  AlertTriangle, 
-  Terminal, 
   Radio, 
-  CheckCircle, 
-  MapPin, 
-  Clock, 
-  Users, 
   Camera, 
-  Flame,
-  Brain,
-  Sparkles
+  Brain
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
 import Badge from "@/components/ui/Badge";
@@ -24,7 +16,6 @@ export default function SecurityPage() {
     incidents, 
     volunteers, 
     activeScenario, 
-    triggerSimulationScenario, 
     resolveIncident, 
     assignVolunteer 
   } = useApp();
@@ -47,11 +38,16 @@ export default function SecurityPage() {
   // Fetch emergency response plan when incident is selected
   useEffect(() => {
     if (!selectedInc) {
-      setAiPlan("");
-      return;
+      const timer = setTimeout(() => {
+        setAiPlan("");
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
-    setLoadingPlan(true);
+    const timer = setTimeout(() => {
+      setLoadingPlan(true);
+    }, 0);
+
     fetch("/api/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -70,6 +66,8 @@ export default function SecurityPage() {
         console.error("Plan fetch error:", err);
         setLoadingPlan(false);
       });
+
+    return () => clearTimeout(timer);
   }, [selectedInc]);
 
   const activeTickets = incidents.filter(i => i.status !== "resolved");

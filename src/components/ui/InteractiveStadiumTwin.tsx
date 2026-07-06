@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useApp, GateStatus, Incident } from "@/context/AppContext";
+import { useApp, Incident } from "@/context/AppContext";
 import { 
   Users, 
   Accessibility, 
@@ -11,9 +11,7 @@ import {
   Compass, 
   Activity,
   CheckCircle,
-  Clock,
-  Sparkles,
-  Play
+  Sparkles
 } from "lucide-react";
 import GlassCard from "./GlassCard";
 import Badge from "@/components/ui/Badge";
@@ -27,7 +25,6 @@ export const InteractiveStadiumTwin: React.FC<InteractiveStadiumTwinProps> = ({ 
     gateStatuses, 
     incidents, 
     activeScenario, 
-    crowdLevel, 
     wheelchairRoutes,
     setWheelchairRoutes,
     reducedMotion
