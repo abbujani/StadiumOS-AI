@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+:root {
+  --background: #04040f;
+  --foreground: #f3f4f6;
+  --card: rgba(10, 10, 30, 0.55);
+  --card-foreground: #f3f4f6;
+  --popover: #0a0a20;
+  --popover-foreground: #f3f4f6;
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #3b82f6;
+  --secondary-foreground: #ffffff;
+  --muted: #16162a;
+  --muted-foreground: #9ca3af;
+  --accent: #d946ef;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: #8b5cf6;
+  --radius: 0.75rem;
+}
+
+/* High contrast accessibility override */
+.high-contrast {
+  --background: #000000 !important;
+  --foreground: #ffffff !important;
+  --card: #000000 !important;
+  --card-foreground: #ffffff !important;
+  --border: #ffffff !important;
+  --input: #000000 !important;
+  --primary: #ffff00 !important; /* High contrast yellow */
+  --primary-foreground: #000000 !important;
+  --secondary: #00ffff !important; /* High contrast cyan */
+  --secondary-foreground: #000000 !important;
+  --muted-foreground: #ffffff !important;
+  --muted: #111111 !important;
+  --accent: #ffff00 !important;
+}
+
+/* Large text mode scales typography globally */
+.large-text {
+  font-size: 115% !important;
+}
+
+.large-text h1 {
+  font-size: 2.5rem !important;
+}
+
+.large-text h2 {
+  font-size: 2rem !important;
+}
+
+.large-text p, .large-text span, .large-text button, .large-text a, .large-text input, .large-text label {
+  font-size: 1.15rem !important;
+  line-height: 1.6 !important;
+}
+
+@theme {
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Glassmorphism Utility Classes */
+.glass-panel {
+  background: rgba(10, 10, 26, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-heavy {
+  background: rgba(7, 7, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(139, 92, 246, 0.6);
+  outline: none;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.25);
+}
+
+/* Animated Grid Background for Futuristic Dashboard Feel */
+.grid-bg {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Risk Pulsing Alert Animation */
+@keyframes pulse-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.pulse-risk {
+  animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-purple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(139, 92, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+}
+
+.pulse-active {
+  animation: pulse-purple 2s infinite;
+}
