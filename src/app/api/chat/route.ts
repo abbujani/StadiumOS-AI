@@ -75,7 +75,15 @@ Please let me know if you need more details on gates, washrooms, seat directions
 
 export async function POST(request: Request) {
   try {
-    const { messages } = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (parseError) {
+      console.error("Chat API request body JSON parse failure:", parseError);
+      return NextResponse.json({ error: "Invalid JSON payload" }, { status: 400 });
+    }
+
+    const { messages } = body;
     const lastUserMessage = messages && messages.length > 0 
       ? messages[messages.length - 1].content 
       : "";

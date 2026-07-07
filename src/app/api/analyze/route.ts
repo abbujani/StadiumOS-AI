@@ -141,7 +141,15 @@ const generateEmergencyPlan = (scenario: string): string => {
 
 export async function POST(request: Request) {
   try {
-    const { type, query, gateStatuses = {}, incidents = [], activeScenario = "none", crowdLevel = 0.68 } = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (parseError) {
+      console.error("Analyze API request body JSON parse failure:", parseError);
+      return NextResponse.json({ error: "Invalid JSON payload" }, { status: 400 });
+    }
+
+    const { type, query, gateStatuses = {}, incidents = [], activeScenario = "none", crowdLevel = 0.68 } = body;
 
     // If Gemini API is available, use it!
     if (genAI) {

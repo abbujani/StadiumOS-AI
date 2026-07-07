@@ -19,6 +19,7 @@ export default function SettingsPage() {
   // Profile settings state
   const [username, setUsername] = useState("Operations Director");
   const [email, setEmail] = useState("admin@fifaworldcup.com");
+  const [emailError, setEmailError] = useState("");
   
   // Keys settings state (synced with localStorage for on-the-fly live calls)
   const [geminiKey, setGeminiKey] = useState("");
@@ -44,6 +45,13 @@ export default function SettingsPage() {
 
   const handleSaveSettings = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+    setEmailError("");
     
     if (typeof window !== "undefined") {
       localStorage.setItem("GEMINI_API_KEY", geminiKey);
@@ -97,6 +105,7 @@ export default function SettingsPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full glass-input rounded-lg px-3 py-2 text-xs outline-none focus:border-purple-500"
                 />
+                {emailError && <p className="text-[10px] text-rose-400 font-bold">{emailError}</p>}
               </div>
 
               <div className="space-y-1.5">
