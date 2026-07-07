@@ -1,5 +1,5 @@
 # StadiumOS AI ⚽
-> **The AI Operating System for FIFA World Cup 2026.**
+> **The Generative AI Operating System for FIFA World Cup 2026.**
 
 StadiumOS AI is a production-ready, enterprise-grade Generative AI platform designed to enhance stadium operations, transit networks, crowd logistics, accessibility, and emergency support during the FIFA World Cup 2026 at SoFi Stadium, Los Angeles.
 
@@ -22,15 +22,29 @@ StadiumOS AI is a production-ready, enterprise-grade Generative AI platform desi
 
 ---
 
-## 🚀 Key Features
+## 📋 Hackathon Evaluation Overview
 
-* **AI Mission Control Room:** Live operations telemetry dashboard showing Stadium Health Score, Live Attendance, Crowd Risk, and AI Model Confidence with animated count-ups. Includes a natural language command terminal and printable PDF brief exporter.
-* **Digital Stadium Twin 2.0:** Interactive SVG twin of SoFi Stadium mapping real-time seating sector loads, queue statuses, medical/security incidents, and optimized ADA elevator corralling. Features animated crowd flow particle nodes and 10/20/30-minute predictive bottleneck projections.
-* **AIAssistant Fan Liaison:** LLM-backed (Gemini-ready with rule-based local fallback) chat liaison capable of answering seat navigation, concessions menus, restroom wait times, or language queries.
-* **Volunteer Shift Optimizer:** Real-time staffing reallocations recommendations powered by ingress bottleneck predictive calculations (+10m, +20m, +30m).
-* **Green Transportation Hub:** Eco-friendly travel scheduler matching transit delays forecasting to green carbon offset indices comparing solo trips to subway routes.
-* **WCAG AAA Accessibility:** High contrast UI, typography scales, local text-to-speech visual reading tools, wheelchair priority pathing, and a "Reduced Motion" setting to freeze twin map animations.
-* **Crisis Simulator Console:** Admin tools to inject match scenarios (Gate Closures, Cardiac Emergencies, Evacuations, Rainstorms) triggering instant security dispatch workflows.
+### 1. Chosen Challenge
+* **Hack2Skill Challenge 4:** Smart Stadiums & Tournament Operations for the FIFA World Cup 2026.
+
+### 2. Business Problem & Objective
+High-occupancy international sports events suffer from massive crowd bottlenecks, transit congestions, speech barriers for foreign fans, and accessibility limitations. StadiumOS AI provides a single unified operational dashboard leveraging Generative AI to automate telemetry intelligence, dispatch responders, suggest volunteer reallocations, and translate fan requests in real-time.
+
+### 3. Persona Scopes
+* **Fans:** Get turn-by-turn navigation (ADA priority), concessions details, eco-commute planner, and multilingual assistant care.
+* **Organizers:** View operations metrics, download printable briefings, and analyze real-time stadium health scores.
+* **Volunteers:** Access shift logs, gate predictions, and a live coordinator chat portal.
+* **Security & Medical Teams:** Receive instant dispatch telemetry, hazard pins on the twin map, and AI response plans.
+* **System Administrators:** Control full simulation overrides to test preparedness.
+
+### 4. AI Workflow & Decision Logic
+* **Dual Execution Mode:** The system connects directly to the Google Gemini 1.5 Flash API for natural language command parsing and fan chats.
+* **Resilient Offline Fallback:** If API credentials are not set, a local rule-based parsing engine takes over immediately, maintaining fully structured recommendations and responses.
+
+### 5. Standard User Journeys
+1. **Fan Journey:** Select "Fan" scope -> Open Smart Navigation -> input "Section 104" -> toggles "Wheelchair Path" -> retrieves optimized escalators and lifts routes.
+2. **Organizer Journey:** Select "Organizer" scope -> View Live Telemetry -> injecting "Gate A Closure" in the Admin panel -> reviews automated volunteer reallocation suggestions.
+3. **Security Dispatch:** Select "Security" scope -> View Active Incidents list -> locates high severity tickets -> reviews dispatcher checklists.
 
 ---
 
@@ -58,9 +72,12 @@ stadiumos-ai/
 │   │   ├── settings/             # System key configurations page
 │   │   ├── transportation/       # Green transit hub & carbon calculator
 │   │   └── volunteer/            # Optimization task board & radio chat
+│   │   ├── loading.tsx           # Global loading layout boundary
+│   │   ├── error.tsx             # Global error boundary handler
+│   │   ├── not-found.tsx         # Global 404 router page
 │   ├── components/
 │   │   ├── layout/               # Sidebar & Navbar layout components
-│   │   └── ui/                   # Reusable components (GlassCard, Badge, Counter)
+│   │   └── ui/                   # Reusable components (GlassCard, Badge, Counter, LiveMetrics)
 │   ├── context/
 │   │   └── AppContext.tsx        # React global context container
 │   └── test/                     # Vitest React Testing Library suite
@@ -73,16 +90,6 @@ stadiumos-ai/
 ├── tsconfig.json                 # Strict TypeScript configurations
 └── vitest.config.ts              # Vitest config
 ```
-
----
-
-## ⚙️ Environment Variables
-
-StadiumOS AI functions fully out of the box using built-in, local rule-based fallback engines. To connect it directly to the cloud, configure the following keys in your local environment or the dashboard **Settings Page**:
-
-* `GEMINI_API_KEY`: API Key for Google Gemini 1.5 models.
-* `FIREBASE_API_KEY`: API Key for real-time listener syncing.
-* `FIREBASE_PROJECT_ID`: Target Firebase database ID.
 
 ---
 
@@ -135,8 +142,10 @@ npm run test
 
 ---
 
-## 🛡️ Security & Performance
+## 🛡️ Security, Performance & Scalability
 
 * **Zero Memory Leaks:** All asynchronous `useEffect` updates and requestAnimationFrame instances are bound to cleanup closures.
-* **Hydration Protection:** Client-only Recharts and AnimatedCounters are guarded with mounting timeouts to prevent UI flashes.
-* **Typesafe API Handlers:** API routes validate payload structures and catch network anomalies gracefully without crashing the UI.
+* **Context Value Memoization:** The global `AppContext` provider value is memoized using `useMemo`, and dispatchers are memoized in `useCallback` hooks, blocking unnecessary re-renders of child pages during telemetry ticks.
+* **Server Components Integration:** The root landing page `src/app/page.tsx` is implemented as a pure Server Component, deferring interactive tickers to the smaller `<LiveMetrics />` client widget, lowering initial hydration size.
+* **Vercel Serverless Ready:** API routes are fully stateless and configured for Edge or Serverless deployment.
+* **Future Scope:** Expanding the twin map with live database bindings (Firebase/PostgreSQL) and integrating computer vision models for automated crowd occupancy tracking.
