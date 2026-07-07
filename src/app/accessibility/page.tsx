@@ -14,6 +14,13 @@ import {
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
 
+const voiceCommands = [
+  { cmd: '"Where is Section 104?"', desc: "AI responds with gate directions, transit time, and lift zones." },
+  { cmd: '"Locate closest accessible washroom"', desc: "Locates ADA bathrooms with lowest current queues." },
+  { cmd: '"Activate emergency medical help"', desc: "Dispatches medical EMTs immediately to Section 104." },
+  { cmd: '"Is Gate A open?"', desc: "Check if Gate A has queue bottlenecks or closures." },
+];
+
 export default function AccessibilityPage() {
   const {
     voiceNavigation,
@@ -60,13 +67,6 @@ export default function AccessibilityPage() {
       window.speechSynthesis.speak(utterance);
     }
   };
-
-  const voiceCommands = [
-    { cmd: '"Where is Section 104?"', desc: "AI responds with gate directions, transit time, and lift zones." },
-    { cmd: '"Locate closest accessible washroom"', desc: "Locates ADA bathrooms with lowest current queues." },
-    { cmd: '"Activate emergency medical help"', desc: "Dispatches medical EMTs immediately to Section 104." },
-    { cmd: '"Is Gate A open?"', desc: "Check if Gate A has queue bottlenecks or closures." },
-  ];
 
   return (
     <div className="space-y-6">

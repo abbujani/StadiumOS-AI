@@ -12,6 +12,15 @@ import {
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
 
+const roles = [
+  { title: "Fans", desc: "AI-driven navigation, digital seat finder, concession pre-ordering, and voice-guided assistance.", icon: "🎫", color: "from-blue-500/20 to-cyan-500/20" },
+  { title: "Organizers", desc: "Live operations command, transit scheduling, resource optimization, and executive summaries.", icon: "📊", color: "from-purple-500/20 to-pink-500/20" },
+  { title: "Volunteers", desc: "AI-optimized task dispatch, live language translation, and crowd escort directions.", icon: "🤝", color: "from-emerald-500/20 to-teal-500/20" },
+  { title: "Security Team", desc: "Live crowd heatmaps, queue predictions, incident summaries, and automated response plans.", icon: "🛡️", color: "from-rose-500/20 to-orange-500/20" },
+  { title: "Medical Responders", desc: "Immediate incident routing, priority elevator dispatch, and emergency logs.", icon: "🚑", color: "from-red-500/20 to-rose-500/20" },
+  { title: "System Admins", desc: "Full simulation overrides, environment telemetry control, and system integrity logs.", icon: "⚙️", color: "from-zinc-500/20 to-slate-500/20" },
+];
+
 export default function LandingPage() {
   const [attendeeCount, setAttendeeCount] = useState(62840);
   const [carbonOffset, setCarbonOffset] = useState(1420.5);
@@ -27,15 +36,6 @@ export default function LandingPage() {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-
-  const roles = [
-    { title: "Fans", desc: "AI-driven navigation, digital seat finder, concession pre-ordering, and voice-guided assistance.", icon: "🎫", color: "from-blue-500/20 to-cyan-500/20" },
-    { title: "Organizers", desc: "Live operations command, transit scheduling, resource optimization, and executive summaries.", icon: "📊", color: "from-purple-500/20 to-pink-500/20" },
-    { title: "Volunteers", desc: "AI-optimized task dispatch, live language translation, and crowd escort directions.", icon: "🤝", color: "from-emerald-500/20 to-teal-500/20" },
-    { title: "Security Team", desc: "Live crowd heatmaps, queue predictions, incident summaries, and automated response plans.", icon: "🛡️", color: "from-rose-500/20 to-orange-500/20" },
-    { title: "Medical Responders", desc: "Immediate incident routing, priority elevator dispatch, and emergency logs.", icon: "🚑", color: "from-red-500/20 to-rose-500/20" },
-    { title: "System Admins", desc: "Full simulation overrides, environment telemetry control, and system integrity logs.", icon: "⚙️", color: "from-zinc-500/20 to-slate-500/20" },
-  ];
 
   return (
     <div className="relative min-h-[calc(100vh-62px)] flex flex-col justify-center items-center py-10 overflow-hidden">
