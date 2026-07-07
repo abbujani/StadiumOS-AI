@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { useApp } from "@/context/AppContext";
-import { calculateCarbonSavings } from "@/utils/transit";
 import { 
   Train, 
   Bus, 
@@ -47,10 +46,17 @@ export default function TransportationPage() {
     { time: "21:00", freewaySpeed: 58, stadiumRoadsSpeed: 40 },
   ], []);
 
-  const { soloCarCarbon, selectedCarbon, carbonSaved } = useMemo(
-    () => calculateCarbonSavings(distanceKm, selectedTransit),
-    [distanceKm, selectedTransit]
-  );
+  // Carbon Emission calculations (grams of CO2 per passenger km)
+  const carbonFactors = useMemo<Record<string, number>>(() => ({
+    car_solo: 220,
+    rideshare: 110,
+    bus: 80,
+    metro: 20
+  }), []);
+
+  const soloCarCarbon = useMemo(() => distanceKm * carbonFactors["car_solo"], [distanceKm, carbonFactors]);
+  const selectedCarbon = useMemo(() => distanceKm * carbonFactors[selectedTransit], [distanceKm, selectedTransit, carbonFactors]);
+  const carbonSaved = useMemo(() => soloCarCarbon - selectedCarbon, [soloCarCarbon, selectedCarbon]);
 
   // Transit forecast data (+10, +20, +30 mins)
   const transitForecasts = useMemo(() => [
