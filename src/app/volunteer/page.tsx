@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
 import { 
   HeartHandshake, 
@@ -25,12 +25,12 @@ export default function VolunteerPortalPage() {
     { sender: "System Admin", msg: "Support team dispatched to repair turnstile at Gate A.", time: "22:23" }
   ]);
 
-  const handleCheckInOut = useCallback(() => {
+  const handleCheckInOut = () => {
     setCheckedIn(!checkedIn);
     updateVolunteerStatus("VOL-01", !checkedIn ? "idle" : "off-duty");
-  }, [checkedIn, updateVolunteerStatus]);
+  };
 
-  const handleSendChat = useCallback(() => {
+  const handleSendChat = () => {
     if (!chatInput.trim()) return;
     setChatLogs(prev => [
       ...prev,
@@ -41,10 +41,10 @@ export default function VolunteerPortalPage() {
       }
     ]);
     setChatInput("");
-  }, [chatInput]);
+  };
 
   // AI Volunteer Optimizer recommendations
-  const opt = useMemo(() => {
+  const getOptimizerSuggestion = () => {
     const isGateAClosed = gateStatuses["Gate A (North)"] === "closed" || gateStatuses["Gate A (North)"] === "congested";
     
     if (isGateAClosed) {
@@ -62,10 +62,12 @@ export default function VolunteerPortalPage() {
       recommendation: "Maintain current post assignments. Sarah Jenkins to check in on Concourse 1 concessions.",
       impact: "Queue levels stable at all sectors."
     };
-  }, [gateStatuses]);
+  };
+
+  const opt = getOptimizerSuggestion();
 
   // Simulated 10, 20, 30 mins volunteer demand forecasts
-  const predictions = useMemo(() => {
+  const getPredictiveDemand = () => {
     const isGateAClosed = gateStatuses["Gate A (North)"] === "closed" || gateStatuses["Gate A (North)"] === "congested";
     
     return [
@@ -74,7 +76,9 @@ export default function VolunteerPortalPage() {
       { time: "+30 mins", location: "ADA Gate 1", status: "stable", count: 0, reason: "Normal ADA shuttle frequency" },
       { time: "+30 mins", location: "Concourse Central", status: "decrease", count: -2, reason: "Spectators seated" }
     ];
-  }, [gateStatuses]);
+  };
+
+  const predictions = getPredictiveDemand();
 
   return (
     <div className="space-y-6">

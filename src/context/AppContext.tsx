@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 export type UserRole = "fan" | "organizer" | "volunteer" | "security" | "medical" | "admin";
 export type StadiumScenario = "none" | "gate_closure" | "medical_emergency" | "heavy_rain" | "evacuation";
@@ -215,29 +215,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return () => clearInterval(interval);
   }, [incidents, activeScenario, isTourActive]);
 
-  // Gate Status Setter
-  const setGateStatus = useCallback((gate: string, status: GateStatus) => {
-    setGateStatuses((prev) => ({ ...prev, [gate]: status }));
-  }, []);
-
-  // Incident dispatcher action
-  const addIncident = useCallback((incidentData: Omit<Incident, "id" | "timestamp">) => {
-    const newInc: Incident = {
-      ...incidentData,
-      id: `INC-${Math.floor(100 + Math.random() * 900)}`,
-      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    };
-    setIncidents((prev) => [newInc, ...prev]);
-  }, []);
-
-  const resolveIncident = useCallback((id: string) => {
-    setIncidents((prev) =>
-      prev.map((inc) => (inc.id === id ? { ...inc, status: "resolved" } : inc))
-    );
-  }, []);
-
-  // Simulator Scenario Trigger
-  const triggerSimulationScenario = useCallback((scenario: StadiumScenario) => {
+  // Handle simulated scenarios
+  const triggerSimulationScenario = (scenario: StadiumScenario) => {
     setActiveScenario(scenario);
     if (scenario === "none") {
       setCrowdLevel(0.68);
@@ -314,25 +293,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         status: "reported",
       });
     }
-  }, [addIncident]);
+  };
 
-  const assignVolunteer = useCallback((incidentId: string, volunteerId: string) => {
-    setVolunteers((prev) => {
-      const volName = prev.find((v) => v.id === volunteerId)?.name || "Volunteer";
-      
-      setIncidents((prevInc) =>
-        prevInc.map((inc) =>
-          inc.id === incidentId
-            ? {
-                ...inc,
-                status: "dispatching",
-                volunteerAssigned: volName,
-              }
-            : inc
-        )
-      );
+  const setGateStatus = (gate: string, status: GateStatus) => {
+    setGateStatuses((prev) => ({ ...prev, [gate]: status }));
+  };
 
-      return prev.map((v) =>
+  const addIncident = (incidentData: Omit<Incident, "id" | "timestamp">) => {
+    const newInc: Incident = {
+      ...incidentData,
+      id: `INC-${Math.floor(100 + Math.random() * 900)}`,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    };
+    setIncidents((prev) => [newInc, ...prev]);
+  };
+
+  const resolveIncident = (id: string) => {
+    setIncidents((prev) =>
+      prev.map((inc) => (inc.id === id ? { ...inc, status: "resolved" } : inc))
+    );
+  };
+
+  const assignVolunteer = (incidentId: string, volunteerId: string) => {
+    const volName = volunteers.find((v) => v.id === volunteerId)?.name || "Volunteer";
+    
+    setVolunteers((prev) =>
+      prev.map((v) =>
         v.id === volunteerId
           ? {
               ...v,
@@ -340,150 +326,133 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               currentTask: `Assigned to incident ${incidentId}`,
             }
           : v
-      );
-    });
-  }, []);
+      )
+    );
 
-  const updateVolunteerStatus = useCallback((id: string, status: Volunteer["status"], task?: string, location?: string) => {
+    setIncidents((prev) =>
+      prev.map((inc) =>
+        inc.id === incidentId
+          ? {
+              ...inc,
+              status: "dispatching",
+              volunteerAssigned: volName,
+            }
+          : inc
+      )
+    );
+  };
+
+  const updateVolunteerStatus = (id: string, status: Volunteer["status"], task?: string, location?: string) => {
     setVolunteers((prev) =>
       prev.map((v) => (v.id === id ? { ...v, status, currentTask: task, assignedLocation: location } : v))
     );
-  }, []);
+  };
 
-  const updateTransitStatus = useCallback((id: string, status: TransitFeed["status"], load: TransitFeed["load"]) => {
+  const updateTransitStatus = (id: string, status: TransitFeed["status"], load: TransitFeed["load"]) => {
     setTransitFeeds((prev) =>
       prev.map((tr) => (tr.id === id ? { ...tr, status, load } : tr))
     );
-  }, []);
-
-  const applyTourSideEffects = useCallback((step: number) => {
-    switch (step) {
-      case 1:
-        setUserRole("fan");
-        break;
-      case 2:
-        setUserRole("fan");
-        break;
-      case 3:
-        setUserRole("organizer");
-        setWheelchairRoutes(false);
-        break;
-      case 4:
-        setUserRole("organizer");
-        break;
-      case 5:
-        setUserRole("volunteer");
-        break;
-      case 6:
-        setUserRole("security");
-        triggerSimulationScenario("gate_closure");
-        break;
-      case 7:
-        setUserRole("organizer");
-        break;
-      default:
-        break;
-    }
-  }, [triggerSimulationScenario]);
+  };
 
   // Tour transitions logic
-  const nextTourStep = useCallback(() => {
+  const nextTourStep = () => {
     setTourStep((prev) => {
       const nextStep = prev + 1;
       applyTourSideEffects(nextStep);
       return nextStep;
     });
-  }, [applyTourSideEffects]);
+  };
 
-  const prevTourStep = useCallback(() => {
+  const prevTourStep = () => {
     setTourStep((prev) => {
       const nextStep = Math.max(1, prev - 1);
       applyTourSideEffects(nextStep);
       return nextStep;
     });
-  }, [applyTourSideEffects]);
+  };
 
-  const exitTour = useCallback(() => {
+  const exitTour = () => {
     setIsTourActive(false);
     setTourStep(0);
     setUserRole("fan");
     triggerSimulationScenario("none");
-  }, [triggerSimulationScenario]);
+  };
 
-  const contextValue = useMemo(() => ({
-    userRole,
-    setUserRole,
-    activeStadium,
-    setActiveStadium,
-    voiceNavigation,
-    setVoiceNavigation,
-    highContrast,
-    setHighContrast,
-    largeText,
-    setLargeText,
-    wheelchairRoutes,
-    setWheelchairRoutes,
-    reducedMotion,
-    setReducedMotion,
-    activeScenario,
-    triggerSimulationScenario,
-    crowdLevel,
-    setCrowdLevel,
-    gateStatuses,
-    setGateStatus,
-    stadiumHealth,
-    setStadiumHealth,
-    crowdRisk,
-    setCrowdRisk,
-    aiConfidence,
-    incidents,
-    addIncident,
-    resolveIncident,
-    assignVolunteer,
-    volunteers,
-    updateVolunteerStatus,
-    transitFeeds,
-    updateTransitStatus,
-    isTourActive,
-    setIsTourActive,
-    tourStep,
-    setTourStep,
-    nextTourStep,
-    prevTourStep,
-    exitTour,
-  }), [
-    userRole,
-    activeStadium,
-    voiceNavigation,
-    highContrast,
-    largeText,
-    wheelchairRoutes,
-    reducedMotion,
-    activeScenario,
-    crowdLevel,
-    gateStatuses,
-    stadiumHealth,
-    crowdRisk,
-    aiConfidence,
-    incidents,
-    volunteers,
-    transitFeeds,
-    isTourActive,
-    tourStep,
-    assignVolunteer,
-    updateVolunteerStatus,
-    updateTransitStatus,
-    nextTourStep,
-    prevTourStep,
-    exitTour,
-    triggerSimulationScenario,
-    addIncident,
-    resolveIncident,
-    setGateStatus
-  ]);
+  const applyTourSideEffects = (step: number) => {
+    switch (step) {
+      case 1: // Fan
+        setUserRole("fan");
+        break;
+      case 2: // Chat Assistant
+        setUserRole("fan");
+        break;
+      case 3: // Stadium Twin
+        setUserRole("organizer");
+        setWheelchairRoutes(false);
+        break;
+      case 4: // Predictions
+        setUserRole("organizer");
+        break;
+      case 5: // Volunteer Optimizer
+        setUserRole("volunteer");
+        break;
+      case 6: // Emergency Simulation
+        setUserRole("security");
+        triggerSimulationScenario("gate_closure");
+        break;
+      case 7: // Executive Report
+        setUserRole("organizer");
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
-    <AppContext.Provider value={contextValue}>
+    <AppContext.Provider
+      value={{
+        userRole,
+        setUserRole,
+        activeStadium,
+        setActiveStadium,
+        voiceNavigation,
+        setVoiceNavigation,
+        highContrast,
+        setHighContrast,
+        largeText,
+        setLargeText,
+        wheelchairRoutes,
+        setWheelchairRoutes,
+        reducedMotion,
+        setReducedMotion,
+        activeScenario,
+        triggerSimulationScenario,
+        crowdLevel,
+        setCrowdLevel,
+        gateStatuses,
+        setGateStatus,
+        stadiumHealth,
+        setStadiumHealth,
+        crowdRisk,
+        setCrowdRisk,
+        aiConfidence,
+        incidents,
+        addIncident,
+        resolveIncident,
+        assignVolunteer,
+        volunteers,
+        updateVolunteerStatus,
+        transitFeeds,
+        updateTransitStatus,
+        isTourActive,
+        setIsTourActive,
+        tourStep,
+        setTourStep,
+        nextTourStep,
+        prevTourStep,
+        exitTour,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -148,11 +148,7 @@ export async function POST(request: Request) {
       try {
         const model = genAI.getGenerativeModel({
           model: "gemini-1.5-flash",
-          systemInstruction: `You are the StadiumOS AI Command Core, analyzing real-time stadium telemetry, crisis simulations, and staff assignments for FIFA World Cup 2026 organizers.
-Directives:
-1. Provide professional, data-driven, highly structured responses.
-2. Formulate concrete, actionable dispatch steps for security/medical teams or volunteer shifts.
-3. Keep statements concise, using bold keywords and markdown layouts. Avoid introductory fluff or conversational greetings.`
+          systemInstruction: "You are the StadiumOS AI Command Core, analyzing stadium telemetry for organizers. Provide professional, data-driven, and highly structured responses. Use bullet points and clean markdown. Avoid fluff."
         });
 
         let prompt = "";
